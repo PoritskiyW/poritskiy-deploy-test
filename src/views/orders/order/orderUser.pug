@@ -1,0 +1,21 @@
+label ФИО
+  p.item__param= order.userFullname
+label Статус
+  if order.status == 'В обработке'
+    p.item__param= order.status
+  else
+    p.item__param= order.status
+    input(type="button", value="Завершить").item__button#endOrder
+label Заказ
+  ul#order
+    each service in order.services
+      li(id=`order_${i}`).order-list__item.item
+        label Услуга
+          p(id= 'service_' + i).item__param.service= service.service
+        label Тип услуги
+          p(id= 'type_' + i).item__param.type= service.type
+        label Стоимость
+          p(id= 'cost_' + i).item__param.cost= service.cost
+  if order.status == 'Возврат'
+    p.item__param= order.returnCause
+

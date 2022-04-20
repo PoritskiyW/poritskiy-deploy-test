@@ -1,0 +1,48 @@
+label ФИО
+  p.item__param= order.userFullname
+label Дата создания
+  p.item__param= order.date
+label Статус
+  select.form__select.select.item__param#status
+    if order.status == 'Новый'
+      option(value='0' selected).select__option= order.status
+    else
+      option(value='0').select__option Новый
+    if order.status == 'Готов к выдаче'
+      option(value='1' selected).select__option= order.status
+    else
+      option(value='1').select__option Готов к выдаче
+    if order.status == 'Возврат'
+      option(value='2' selected).select__option= order.status
+    else
+      option(value='2').select__option Возврат
+p Заказ
+ul#order
+  each service in order.services
+    li(id=`order_${i}`).order-list__item.item
+      label Услуга
+        p(id= 'service_' + i).item__param.service= service.service
+      label Тип услуги
+        p(id= 'type_' + i).item__param.type= service.type
+      label Стоимость
+        p(id= 'cost_' + i).item__param.cost= service.cost
+      label
+        input(type="button", value="Удалить услугу" id= 'delete_' + i).item__button.delete
+p Доступные услуги
+ul#servicesList
+  each service in order.cleaner.services
+    li(id=`order_${i}`).services-list__item.item
+      label Услуга
+        p(id= 'serviceRefer_' + i).item__param.service= service.service
+      label Тип услуги
+        p(id= 'typeRefer_' + i).item__param.type= service.type
+      label Стоимость
+        p(id= 'costRefer_' + i).item__param.cost= service.cost
+      label
+        input(type="button", value="Добавить услугу" id= 'add_' + i).item__button.add
+if order.status == 'Возврат'
+  label#cause Причина возврата
+    textarea(name="", cols="30", rows="10")#returnCause
+input(type="button", value="Сохранить").item__button#submit
+
+

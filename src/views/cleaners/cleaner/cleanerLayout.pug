@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    if cleaner
+      if (role == 'Admin')
+        title Изменение химчистки
+        link(rel="stylesheet", href="/styles/cleaners/cleaner/cleanerUpdate.css")
+
+      else
+        title Химчистка
+        link(rel="stylesheet", href="/styles/cleaners/cleaner/cleanerUser.css")
+    else
+      title Создание химчистки
+      link(rel="stylesheet", href="/styles/cleaners/cleaner/cleanerCreation.css")
+    link(rel="stylesheet", href="/styles/cleaners/cleaner/cleanerLayout.css")
+
+
+  body
+    include header
+    .wrapper
+      form.form#creationForm
+        if (role == 'Admin')
+          if cleaner
+            include cleanerUpdate
+          else
+            include cleanerCreation
+          input(type="button" value="Сохранить").form__button#submit
+        else
+          include cleanerUser
+  if (role == 'Admin')
+    if cleaner
+      script(src="/scripts/cleaners/cleanerUpdate.js" type="text/javascript")
+    else
+      script(src="/scripts/cleaners/cleanerCreation.js" type="text/javascript")
+  else
+    script(src="/scripts/cleaners/cleanerUser.js" type="text/javascript")
+

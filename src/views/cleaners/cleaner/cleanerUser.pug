@@ -1,0 +1,27 @@
+p Название: #{cleaner.cleaner}
+p Описание: #{cleaner.description}
+label Галерея
+  ul.form__gallery.gallery
+    each image, i in cleaner.images
+      li.gallery__item
+        img(src=`${image}`, alt="").item__image-preview
+p Заказ
+  ul#orderedList
+p Услуги
+  ul#servicesList
+    if cleaner.services
+      each service, i in cleaner.services
+        li(id=`item_${i}`).item
+          label Услуга
+            p(id= 'service_' + i).service.item__param= service.service
+          label Тип услуги
+            p(id= 'type_' + i).type.item__param= service.type
+          label Стоимость
+            p(id= 'cost_' + i).cost.item__param= service.cost
+          label
+            input(type="button", value="Добавить к заказу" id= "addService_" + i).form__button
+    else
+      li
+        p На данный момент услуги отсутсвуют
+  input(type="button", value="Заказать").form__button#saveOrder
+

@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Регистрация
+    link(rel="stylesheet", href="styles/authentication/registration.css")
+  body
+    .wrapper
+      form.form#registrationForm
+        select(required).form__select.select#role
+          option(disabled selected).select__option Выберите роль
+          option(value='User').select__option Клиент
+          option(value='Admin').select__option Администратор
+        label Почта
+          input(type="email" placeholder="Почта" required).form__input#email
+        label Пароль
+          input(type="password" placeholder="Пароль" required).form__input#password
+        label Подтверждение пароля
+          input(type="password" placeholder="Подтверждение пароля" required).form__input#passwordConfirmation
+        p Уже есть аккаунт?
+          a(href="/authentication")  Авторизоваться.
+        if (errorMessage)
+          p#errorMessage #{ errorMessage }
+        else
+          p#errorMessage
+        button(type="submit").form__button#submit Регистрация
+
+  script(src="scripts/authentication/registration.js" type="text/javascript")

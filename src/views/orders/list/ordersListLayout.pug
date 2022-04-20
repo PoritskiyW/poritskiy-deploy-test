@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Заказы
+    link(rel="stylesheet", href="/styles/orders/list/ordersListLayout.css")
+    link(rel="stylesheet", href="/styles/orders/list/order.css")
+  body
+    include header
+    .wrapper
+      ul.orders-list
+        if orders
+          each order in orders
+            include order.pug
+        else
+          p Список заказов пуст

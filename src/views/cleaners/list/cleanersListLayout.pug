@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Химчистки
+    link(rel="stylesheet", href="/styles/cleaners/list/cleanersList.css")
+    if role == 'Admin'
+      link(rel="stylesheet", href="/styles/cleaners/list/cleanerAdmin.css")
+    else
+      link(rel="stylesheet", href="/styles/cleaners/list/cleanerUser.css")
+  body
+    include header.pug
+    main
+      if cleaners
+        ul.cleaners-list
+          each cleaner in cleaners
+            include cleaner.pug
+        if(role == 'Admin')
+            a(href="/cleanerCreation").cleaner-list__button Создать химчистку
+      else
+        p Список химчисток пуст
+        if(role == 'Admin')
+          a(href="/cleanerCreation").cleaner-list__button Создать химчистку
+    script(src="scripts/cleaners/cleanerList.js" type="text/javascript")

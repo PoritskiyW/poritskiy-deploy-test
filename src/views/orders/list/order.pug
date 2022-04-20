@@ -1,0 +1,8 @@
+li.orders-list__item.item
+  label Пользователь
+    p.item__param= order.userFullname
+  label Химчистка
+    p.item__param= order.cleanerName
+  label Статус
+    p.item__param= order.status
+  a(href=`/order/${order._id}`).item__button Редактировать

@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Заказ
+    link(rel="stylesheet", href="/styles/orders/order/orderLayout.css")
+    link(rel="stylesheet", href="/styles/orders/order/order.css")
+  body
+    include header
+    .wrapper
+      .inner
+        if (role == 'Admin')
+          include orderAdmin.pug
+        else
+          include orderUser.pug
+  if role == 'Admin'
+    script(src="/scripts/orders/orderAdmin.js")
+  else
+    script(src="/scripts/orders/orderUser.js")

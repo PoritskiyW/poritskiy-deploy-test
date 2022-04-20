@@ -1,0 +1,36 @@
+.cleaner-list__cleaner {
+  padding: 10px;
+}
+
+.cleaner-list__button {
+  width: 150px;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font: 1em sans-serif;
+  text-align: center;
+  padding: 10px;
+  margin-left: 73px;
+  margin-right: 73px;
+  background-color: #999;
+}
+
+.cleaner-list__button:hover {
+  background-color: #777;
+}
+
+.cleaner__image {
+  border: 1px solid #999;
+  padding: 6px;
+  font: 1em sans-serif;
+  text-align: center;
+  color: black;
+  width: 298px;
+}
+
+.cleaner__name {
+  font: 1em sans-serif;
+  text-align: center;
+  color: black;
+}

@@ -1,0 +1,107 @@
+label {
+  padding: 3px;
+}
+
+.form__images {
+  cursor: pointer;
+  width: 200px;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font: 1em sans-serif;
+  text-align: center;
+  padding: 10px;
+  margin: 3px;
+  background-color: #999;
+}
+
+
+.form__images:hover {
+  background-color: #777;
+}
+
+#images {
+  display: none;
+}
+
+.image-preview {
+  border: 1px solid #999;
+  padding: 6px;
+  font: 1em sans-serif;
+  text-align: center;
+  color: black;
+  width: 298px;
+}
+
+.form__input, .item__param {
+  margin: 3px;
+  width: 150px;
+  border: none;
+  font: 1em sans-serif;
+  background-color: lightgray;
+  color: black;
+  padding: 10px;
+  appearance: textfield;
+}
+
+.form__gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gallery__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.form__text-area {
+  width: 100%;
+  border: none;
+  resize: none;
+  background-color: lightgray;
+  color: black;
+  font: 1em sans-serif;
+}
+
+.form__service-list, .form__gallery {
+  list-style: none;
+}
+
+.item__button, .form__button {
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font: 1em sans-serif;
+  text-align: center;
+  padding: 10px;
+  margin: 3px;
+  background-color: #999;
+}
+
+.item__button:hover {
+  background-color: #777;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+label {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.centered {
+  margin-left: 73px;
+  margin-right: 73px;
+}

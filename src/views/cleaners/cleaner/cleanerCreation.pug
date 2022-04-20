@@ -1,0 +1,21 @@
+label Название
+  input(type="text" placeholder="Название" required).form__input#cleanerName
+label Описание
+  textarea(name="Description", cols="30", rows="3").form__text-area#description
+label Галерея
+  ul.form__images-preview#preview
+label.form__images Загрузите изображения
+  input(type="file"
+    accept="image/png, image/jpeg" multiple)#images
+p Услуги
+  ul.form__service-list.service-list#servicesList
+    li.service-list__item.item#creationLi
+      label Услуга
+        input(type="text").item__param#service
+      label Тип услуги
+        input(type="text").item__param#serviceType
+      label Стоимость
+        input(type="number").item__param#cost
+      label
+        input(type="button", value="Добавить услугу").item__button#addService
+

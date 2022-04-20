@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Личный кабинет
+    link(rel="stylesheet", href="/styles/authentication/userUpdate.css")
+  body
+    include header
+    .wrapper
+      form(action=`/user/${user._id}` method='POST').form#updateForm
+        label Имя
+          input(type="text" name="firstName" value=`${user.firstName}` required).form__input#firstName
+        label Отчество
+          input(type="text" name="middleName" value=`${user.middleName}` required).form__input#middleName
+        label Фамилия
+          input(type="text" name="lastName" value=`${user.lastName}` required).form__input#lastName
+
+        button(type="submit").form__button Сохранить

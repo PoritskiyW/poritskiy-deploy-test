@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Авторизация
+    link(rel="stylesheet", href="styles/authentication/authentication.css")
+  body
+    .wrapper
+      form.form#signInForm
+        label Почта
+          input(type="email" placeholder="Почта" required).form__input#email
+        label Пароль
+          input(type="password" placeholder="Пароль" required).form__input#password
+        p Нет аккаунта?
+          a(href="/registration")  Зарегистрироваться.
+        p Забыли пароль?
+          a(href="/restore")  Восстановить пароль.
+        if (errorMessage)
+          p#errorMessage #{ errorMessage }
+        else
+          p#errorMessage
+        button(type="submit").form__button Авторизация
+
+  script(src="scripts/authentication/authentication.js" type="text/javascript")

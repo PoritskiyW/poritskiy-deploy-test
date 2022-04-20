@@ -1,0 +1,12 @@
+.orders-list {
+  list-style: none;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font: 1em sans-serif;
+}
+

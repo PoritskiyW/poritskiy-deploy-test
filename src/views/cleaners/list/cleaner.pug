@@ -1,0 +1,9 @@
+li.cleaners-list__cleaner
+  img(src=cleaner.images[0], alt="Изображение отустствует").cleaner__image
+  if (role == 'Admin')
+    p.cleaner__name= cleaner.cleaner
+    input(type="button", value="Удалить" id=`delete_${cleaner._id}`).delete.cleaner-list__button
+    input(type="button", value="Редактировать" id=`update_${cleaner._id}`).update.cleaner-list__button
+  else
+    p.cleaner__name= cleaner.cleaner
+    a(href=`/cleaner/${cleaner._id}`).cleaner-list__button Создать заказ

@@ -1,0 +1,43 @@
+body {
+  font: 1em sans-serif;
+}
+
+label {
+  padding: 3px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.item__param {
+  margin: 3px;
+  min-width: 150px;
+  border: none;
+  font: 1em sans-serif;
+  background-color: lightgray;
+  color: black;
+  padding: 10px;
+  appearance: textfield;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.item__button {
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font: 1em sans-serif;
+  text-align: center;
+  padding: 10px;
+  margin: 3px;
+  background-color: #999;
+}

@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 15px;
+  height: 50px;
+  border-bottom: 1px solid #999;
+}
+
+.header__link, .header__cash {
+  color: black;
+  width: 140px;
+  margin: 3px;
+  text-decoration: none;
+  font: 1em sans-serif;
+  text-align: center;
+  padding: 15px;
+  background-color:#999;
+  cursor: pointer;
+}
+
+.header__link:hover, .header__cash:hover {
+  background-color: #777;
+}
