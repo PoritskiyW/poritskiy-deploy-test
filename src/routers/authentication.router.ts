@@ -1,43 +1,42 @@
-import { Router } from 'express';
+import e, { Router } from "express";
 
-
-import { AuthenticationController } from '../controllers/Authentication.controller';
+import { AuthenticationController } from "../controllers/Authentication.controller";
 
 export const authenticationRouter = Router();
-const authController = new AuthenticationController;
+const authController = new AuthenticationController();
 
 authenticationRouter
-  .route('/authentication')
-  .get((req, res) => {
-    res.render('authentication');
+  .route("/authentication")
+  .get((req: e.Request, res: e.Response) => {
+    res.render("authentication");
   })
-  .post(async (req, res) => {
+  .post(async (req: e.Request, res: e.Response) => {
     authController.login(req, res);
   });
 
 authenticationRouter
-  .route('/registration')
-  .get((req, res) => {
-    res.render('registration');
+  .route("/registration")
+  .get((req: e.Request, res: e.Response) => {
+    res.render("registration");
   })
-  .post((req, res) => {
+  .post((req: e.Request, res: e.Response) => {
     authController.registration(req, res);
-  })
+  });
 
 authenticationRouter
-  .route('/restore')
-  .get((req, res) => {
-    res.render('passwordRestoration');
+  .route("/restore")
+  .get((req: e.Request, res: e.Response) => {
+    res.render("passwordRestoration");
   })
-  .post((req, res) => {
+  .post((req: e.Request, res: e.Response) => {
     authController.restorePassword(req, res);
-  })
+  });
 
 authenticationRouter
-  .route('/user/:id')
-  .get((req, res) => {
+  .route("/user/:id")
+  .get((req: e.Request, res: e.Response) => {
     authController.getPersonalData(req, res);
   })
-  .post((req, res) => {
+  .post((req: e.Request, res: e.Response) => {
     authController.updatePersonalData(req, res);
-  })
+  });

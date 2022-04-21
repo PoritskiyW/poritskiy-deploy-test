@@ -1,5 +1,5 @@
 label ФИО
-  p.item__param= order.userFullname
+  p.item__param= order.userName
 label Дата создания
   p.item__param= order.date
 label Статус
@@ -18,7 +18,7 @@ label Статус
       option(value='2').select__option Возврат
 p Заказ
 ul#order
-  each service in order.services
+  each service, i in order.ordered
     li(id=`order_${i}`).order-list__item.item
       label Услуга
         p(id= 'service_' + i).item__param.service= service.service
@@ -30,7 +30,7 @@ ul#order
         input(type="button", value="Удалить услугу" id= 'delete_' + i).item__button.delete
 p Доступные услуги
 ul#servicesList
-  each service in order.cleaner.services
+  each service, i in cleaner.services
     li(id=`order_${i}`).services-list__item.item
       label Услуга
         p(id= 'serviceRefer_' + i).item__param.service= service.service

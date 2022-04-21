@@ -3,7 +3,7 @@ header.header
   a(href='/').header__link На главную
   if (role == 'User')
     a(href=`/orders`).header__link Заказы
-    a(href=`/user/:${user.id}`).header__link Личный кабинет
+    a(href=`/user/:${user._id}`).header__link Личный кабинет
     p.header__cash#user-cash= user.cash
   else
     a(href='/orders').header__link Заказы

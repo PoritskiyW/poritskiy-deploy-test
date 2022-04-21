@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-
-import { jwtConfig } from '../configs/jwtConfig';
+import { jwtConfig } from "../configs/jwtConfig";
+import { cookie } from "../types/cookie.type";
 
 export class JWTController {
   private secret: string;
@@ -10,18 +10,23 @@ export class JWTController {
     this.secret = jwtConfig.secret;
   }
 
-  public decodeJWTCookie(req) {
-    return jwt.verify(req.cookies.jwt, jwtConfig.secret);
+  public decodeJWTCookie(cookie: string): string | JwtPayload {
+    return jwt.verify(cookie, jwtConfig.secret);
   }
 
-  public generateJWTCookie(res, email, role, id) {
-    const token = jwt.sign({ email, role, id }, this.secret, { expiresIn: '24h' });
+  public generateJWTCookie(
+    email: string,
+    role: string,
+    id: string
+  ): { token: string; cookie: cookie } {
+    const token = jwt.sign({ email, role, id }, this.secret, { expiresIn: "24h" });
     const cookie = {
       maxAge: 3600 * 1000,
       httpOnly: true,
     };
-
-    res.cookie('jwt', token, cookie);
-    res.redirect('/');
+    return {
+      token: token,
+      cookie: cookie,
+    };
   }
 }

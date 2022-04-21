@@ -1,111 +1,58 @@
-import bcrypt from 'bcrypt';
+import e from "express";
 
-import { User } from '../models/User.model';
-import { EmailController } from './Email.controller';
-import { JWTController } from './Jwt.controller';
+import { Authentication } from "../services/Authentication.service";
 
 export class AuthenticationController {
-
-  private emailController: EmailController;
-
-  private jwtController: JWTController;
+  private authService: Authentication;
 
   constructor() {
-    this.emailController = new EmailController;
-    this.jwtController = new JWTController;
+    this.authService = new Authentication();
   }
 
-  public async registration(req, res) {
-
+  public async registration(req: e.Request, res: e.Response) {
     const { email, password, role } = req.body;
-    const user = new User(email);
-    const check = await new User(email).getUser();
+    const { cookie, token, errorMessage } = await this.authService.register(email, password, role);
 
-    const hashPassword = await bcrypt.hash(password, 7);
-
-    if (check) {
-      res.render('registration', { errorMessage: 'Аккаунт уже существует' });
+    if (errorMessage) {
+      res.render("registration", { errorMessage: errorMessage });
     } else {
-      user.password = hashPassword;
-      user.role = role;
-      if (role !== 'Admin') {
-        user.cash = AuthenticationController.generateCash();
-      }
-      console.log('user', user);
-
-      user.createUser();
-      this.jwtController.generateJWTCookie(res, user.email, user.role, user.id);
+      res.cookie("jwt", token, cookie);
+      res.redirect("/");
     }
   }
 
-  public async login(req, res) {
+  public async login(req: e.Request, res: e.Response) {
     const { email, password } = req.body;
-    const user = new User(email);
-    const check = await user.getUser();
+    const { cookie, token, errorMessage } = await this.authService.login(email, password);
 
-    if (check) {
-      const match = await bcrypt.compare(password, user.password);
-
-      if (match) {
-        this.jwtController.generateJWTCookie(res, email, user.role, user.id);
-      } else {
-        res.render('authentication', { errorMessage: 'Не верный пароль' });
-      }
+    if (errorMessage) {
+      res.render("authentication", { errorMessage: errorMessage });
     } else {
-      res.render('authentication', { errorMessage: 'Аккаунта с такой почтой не существует' });
+      res.cookie("jwt", token, cookie);
+      res.redirect("/");
     }
   }
 
-  public async restorePassword(req, res) {
+  public async restorePassword(req: e.Request, res: e.Response) {
     const { email } = req.body;
-    const user = new User(email);
-    const check = await user.getUser();
+    const { errorMessage } = await this.authService.restorePassword(email);
 
-    if (check) {
-      const newPassword = AuthenticationController.generateNewPassword();
-      user.password = await bcrypt.hash(newPassword, 7);
-      user.updateUser();
-
-      this.emailController.sendEmail(newPassword, email);
-      res.redirect('/authentication');
+    if (errorMessage) {
+      res.render("passwordRestoration", { errorMessage: errorMessage });
     } else {
-      res.render('authentication', { errorMessage: 'Аккаунта с такой почтой не существует' });
+      res.redirect("/authentication");
     }
   }
 
-  public async getPersonalData(req, res) {
-    const { email } = this.jwtController.decodeJWTCookie(req);
-    const user = new User(email);
-    await user.getUser();
-    res.render('userUpdate', {
-      user: user
-    });
+  public async getPersonalData(req: e.Request, res: e.Response) {
+    const user = await this.authService.getUserData(req.cookies.jwt);
+    res.render("userUpdate", { user: user });
   }
 
-  public async updatePersonalData(req, res) {
+  public async updatePersonalData(req: e.Request, res: e.Response) {
     const { firstName, middleName, lastName } = req.body;
-    const { email } = this.jwtController.decodeJWTCookie(req);
-    const user = new User(email);
-    await user.getUser();
-    user.firstName = firstName;
-    user.middleName = middleName;
-    user.lastName = lastName;
-    user.updateUser();
-    res.redirect('/');
-  }
-
-  static generateCash() {
-    return Math.floor(200 + Math.random() * (500 + 1 - 200));
-  }
-
-  static generateNewPassword() {
-    let result = "";
-    const symbolsPool = 'abcdefghijklmnopqrstuvwxyz1234567890'
-
-    while(result.length <= 16) {
-      const poolSymbolIndex = Math.floor(Math.random() * symbolsPool.length);
-      result += symbolsPool.charAt(poolSymbolIndex);
-    }
-    return result;
+    const cookie = req.cookies.jwt;
+    this.authService.updateUserData(cookie, firstName, middleName, lastName);
+    res.redirect("/");
   }
 }

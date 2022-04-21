@@ -11,7 +11,8 @@ function addListener(id, type, callback) {
 function addServiceHandler(state, event) {
   if(event.target.id.includes('add_')) {
     const addIndex = Number(event.target.id.split('_')[1]);
-    state.ordered.push(state.available[addIndex]);
+    console.log('index', addIndex);
+    state.services.push(state.available[addIndex]);
     renderServicesList(state);
   }
 }
@@ -35,7 +36,7 @@ function renderReturnCause(state, event) {
 function deleteButtonHandler(state, event) {
   if(event.target.id.includes('delete_')) {
     const deleteIndex = Number(event.target.id.split('_')[1]);
-    state.ordered = state.ordered.filter((item, index) => {
+    state.services = state.services.filter((item, index) => {
       if (index === deleteIndex) {
         return false;
       }
@@ -47,7 +48,7 @@ function deleteButtonHandler(state, event) {
 
 function submitButtonHandler(state) {
   const data = {
-    services: state.ordered,
+    services: state.services,
     status: state.status
   }
 
@@ -76,9 +77,10 @@ function renderServicesList(state) {
   const list = document.getElementById('order');
   list.innerHTML = '';
   let rendered = '';
+  console.log(state);
 
   if (state.services.length !== 0) {
-    state.ordered.forEach((element, index) => {
+    state.services.forEach((element, index) => {
       const serviceTemplate = `
       <li class="service-list__item item" id="${index}">
         <label>Услуга
@@ -103,7 +105,7 @@ function renderServicesList(state) {
 
 function init() {
   const state = {
-    ordered: [],
+    services: [],
     available: [],
     status: 0,
   }
@@ -116,7 +118,7 @@ function init() {
         type: document.getElementById(`type_${index}`).innerText,
         cost: document.getElementById(`cost_${index}`).innerText
       }
-      state.ordered.push(service);
+      state.services.push(service);
     } else {
       const index = element.id.split('_')[1];
       const service = {
@@ -128,6 +130,8 @@ function init() {
     }
 
   })
+
+  console.log(state);
 
   addListener('status', 'change', renderReturnCause.bind(null, state));
   addListener('order', 'click', deleteButtonHandler.bind(null, state));

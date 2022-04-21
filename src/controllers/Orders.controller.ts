@@ -1,127 +1,47 @@
-import { ObjectId } from 'mongodb';
+import e from "express";
 
-import { Order } from '../models/Order.model';
-import { JWTController } from './Jwt.controller';
-import { User } from '../models/User.model';
-import { Cleaner } from '../models/Cleaner.model';
-import { ordersStatusEnum } from '../enums/orderStatus.enum';
+import { Orders } from "../services/Orders.service";
 
 export class OrdersController {
-  private jwtController: JWTController;
+  private ordersService: Orders;
 
   constructor() {
-    this.jwtController = new JWTController;
+    this.ordersService = new Orders();
   }
 
-  public async createOrder(req, res) {
-    if (req.cookies.jwt) {
-      const userId = this.jwtController.decodeJWTCookie(req).id;
-      const user = new User();
-
-      user.id = new ObjectId(userId);
-      await user.getUser();
-      user.cash = req.body.userCash;
-      user.updateUser();
-
-      const cleaner = new Cleaner();
-      cleaner._id = new ObjectId(req.params.id);
-      await cleaner.getCleaner();
-      const order = new Order();
-      order.cleaner = new ObjectId(req.params.id);
-      order.cleanerName = cleaner.cleaner;
-
-      order.userFullname = `${user.firstName} ${user.middleName} ${user.lastName}`;
-      order.user = new ObjectId(userId);
-      order.services = req.body.ordered;
-      order.status = 0;
-      order.createOrder();
-      res.redirect('/');
-    } else {
-      res.redirect('/');
-    }
+  public async createOrder(req: e.Request, res: e.Response) {
+    const cookie = req.cookies.jwt;
+    const cleanerId = req.params.id;
+    const ordered = req.body.ordered;
+    const cash = req.body.userCash;
+    await this.ordersService.createOrder(cookie, cleanerId, ordered, cash);
+    res.redirect("/orders");
   }
 
-  public async getOrders(req, res) {
-    if (req.cookies.jwt) {
-      const { email, role } = this.jwtController.decodeJWTCookie(req);
-
-      if (role === 'Admin') {
-        const orders = await new Order().getOrders();
-        orders.forEach(element => {
-          element.status = ordersStatusEnum[Number(element.status)].admin;
-        });
-        res.render('ordersListLayout', { orders: orders });
-      } else {
-        const user = new User(email);
-        await user.getUser();
-        const orders = await new Order().getOrders(user.id);
-        orders.forEach(element => {
-          element.status = ordersStatusEnum[Number(element.status)].user;
-        });
-        res.render('ordersListLayout', { orders: orders, user: user });
-      }
-    } else {
-      res.redirect('/');
-    }
+  public async getOrders(req: e.Request, res: e.Response) {
+    const cookie = req.cookies.jwt;
+    const data = await this.ordersService.getOrders(cookie);
+    res.render("ordersListLayout", data);
   }
 
-  public async getOrder(req, res) {
-    if (req.cookies.jwt) {
-      const orderId = req.params.id;
-
-      const { role, email } = this.jwtController.decodeJWTCookie(req);
-      const order = new Order();
-      order.id = new ObjectId(orderId);
-      await order.getOrder();
-
-      if (role === 'Admin') {
-        const user = new User();
-        user.id = order.user;
-        await user.getUser();
-
-        const cleaner = new Cleaner();
-        cleaner._id = new ObjectId(order.cleaner);
-        await cleaner.getCleaner();
-        Object.assign(order, {
-          fullname: `${user.firstName} ${user.middleName} ${user.lastName}`,
-          date: new ObjectId(orderId).getTimestamp().toLocaleString('en-GB'),
-          cleaner: cleaner,
-          status: ordersStatusEnum[order.status].admin
-        });
-        res.render('orderLayout', { order: order, role: role });
-      } else {
-        const user = new User(email);
-        await user.getUser();
-        Object.assign(order, {
-          status: ordersStatusEnum[order.status].user
-        })
-        res.render('orderLayout', { order: order, role: role, user: user });
-      }
-    } else {
-      res.redirect('/');
-    }
-  }
-
-  public async updateOrder(req, res) {
+  public async getOrder(req: e.Request, res: e.Response) {
+    const cookie = req.cookies.jwt;
     const orderId = req.params.id;
-    console.log(orderId);
-
-    const order = new Order();
-    order.id = new ObjectId(orderId);
-    await order.getOrder();
-    console.log(order);
-
-    order.services = req.body.services;
-    order.status = Number(req.body.status);
-    console.log(order.status);
-
-    order.updateOrder();
-    res.redirect('/orders');
+    const response = await this.ordersService.getOrder(cookie, orderId);
+    res.render("orderLayout", response);
   }
 
-  public deleteOrder(req, res) {
-    const order = new Order(req.params.id);
-    order.deleteOrder();
-    res.redirect('/orders');
+  public updateOrder(req: e.Request, res: e.Response) {
+    const orderId = req.params.id;
+    const services = req.body.ordered;
+    const status = req.body.status;
+    this.ordersService.updateOrder(orderId, services, status);
+    res.redirect("/orders");
+  }
+
+  public deleteOrder(req: e.Request, res: e.Response) {
+    const orderId = req.params.id;
+    this.ordersService.deleteOrder(orderId);
+    res.redirect("/orders");
   }
 }

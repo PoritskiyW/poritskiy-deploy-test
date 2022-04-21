@@ -1,5 +1,5 @@
 export const nodemailerConfig = {
-  host: 'smtp.ethereal.email',
+  host: "smtp.ethereal.email",
   port: 587,
-  secure: false
-}
+  secure: false,
+};

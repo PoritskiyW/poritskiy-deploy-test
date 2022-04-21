@@ -1,5 +1,5 @@
 label ФИО
-  p.item__param= order.userFullname
+  p.item__param= order.userName
 label Статус
   if order.status == 'В обработке'
     p.item__param= order.status
@@ -8,7 +8,7 @@ label Статус
     input(type="button", value="Завершить").item__button#endOrder
 label Заказ
   ul#order
-    each service in order.services
+    each service in order.ordered
       li(id=`order_${i}`).order-list__item.item
         label Услуга
           p(id= 'service_' + i).item__param.service= service.service
