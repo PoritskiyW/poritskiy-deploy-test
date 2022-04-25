@@ -7,7 +7,7 @@
     "start": "node ./dist/app.js",
     "build": "yarn clean && tsc && yarn copy-files",
     "clean": "rimraf dist",
-    "copy-files": "copyfiles -f src/views/****/*.pug dist/views"
+    "copy-files": "copyfiles -f src/views/**/**/*.pug dist/views && copyfiles -f src/views/**/*.pug dist/views"
   },
   "engines": {
     "node": "16.13.2"
